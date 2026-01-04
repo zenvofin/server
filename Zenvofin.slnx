@@ -6,6 +6,8 @@
     <File Path=".github\workflows\pr.yml" />
     <File Path=".gitignore" />
     <File Path="Dockerfile" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
   </Folder>
   <Project Path="Zenvofin/Zenvofin.csproj" />
 </Solution>
