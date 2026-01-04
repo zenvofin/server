@@ -1,0 +1,36 @@
+# Build artifacts
+**/bin/
+**/obj/
+
+# IDE files
+**/.idea/
+**/.vs/
+**/.vscode/
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Docker
+.dockerignore
+Dockerfile*
+docker-compose*
+
+# NuGet
+*.nupkg
+**/packages/
+
+# Test results
+**/TestResults/
+
+# Editor config
+.editorconfig
