@@ -2,6 +2,7 @@
   <Folder Name="/Root/">
     <File Path=".dockerignore" />
     <File Path=".editorconfig" />
+    <File Path=".env" />
     <File Path=".github\renovate.json" />
     <File Path=".github\workflows\pr.yml" />
     <File Path=".gitignore" />
