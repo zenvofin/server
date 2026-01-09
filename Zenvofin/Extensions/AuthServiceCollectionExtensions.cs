@@ -1,9 +1,7 @@
 using System.Text;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-
 using Zenvofin.Features.Auth.Data;
 using Zenvofin.Shared;
 
@@ -13,7 +11,11 @@ public static class AuthServiceCollectionExtensions
 {
     public static IServiceCollection AddAuthServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddIdentity<User, IdentityRole<Guid>>(options => { options.Password.RequiredLength = 8; })
+        services.AddIdentity<User, IdentityRole<Guid>>(options =>
+            {
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+            })
             .AddEntityFrameworkStores<AuthDbContext>();
 
         services.AddAuthentication(options =>
