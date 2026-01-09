@@ -2,18 +2,20 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Zenvofin.Data;
+namespace Zenvofin.Features.Auth.Data;
 
 public sealed class AuthDbContext(DbContextOptions<AuthDbContext> options)
-    : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>(options)
+    : IdentityDbContext<User, IdentityRole<Guid>, Guid>(options)
 {
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 
         builder.HasDefaultSchema("identity");
 
-        builder.Entity<IdentityUser<Guid>>(b =>
+        builder.Entity<User>(b =>
         {
             b.ToTable("users");
             b.Property(u => u.Id).HasColumnName("id");
@@ -83,6 +85,29 @@ public sealed class AuthDbContext(DbContextOptions<AuthDbContext> options)
             b.Property(rc => rc.RoleId).HasColumnName("role_id");
             b.Property(rc => rc.ClaimType).HasColumnName("type");
             b.Property(rc => rc.ClaimValue).HasColumnName("value");
+        });
+
+        builder.Entity<RefreshToken>(b =>
+        {
+            b.HasKey(rt => rt.Id).HasName("pk_refresh_tokens");
+
+            b.ToTable("refresh_tokens");
+
+            b.HasIndex(rt => new { rt.UserId, rt.DeviceId }, "ix_refresh_tokens_user_device");
+            b.HasIndex(rt => rt.Token, "ux_refresh_tokens_token_hash").IsUnique();
+
+            b.Property(rt => rt.Id).HasDefaultValueSql("uuid_generate_v4()").HasColumnName("id");
+            b.Property(rt => rt.CreatedAt).HasDefaultValueSql("now()").HasColumnName("created_at");
+            b.Property(rt => rt.DeviceId).HasColumnName("device_id");
+            b.Property(rt => rt.ExpiresAt).HasColumnName("expires_at");
+            b.Property(rt => rt.IsRevoked).HasColumnName("is_revoked");
+            b.Property(rt => rt.RevokedAt).HasColumnName("revoked_at");
+            b.Property(rt => rt.Token).HasMaxLength(44).IsFixedLength().HasColumnName("token");
+            b.Property(rt => rt.UserId).HasColumnName("user_id");
+
+            b.HasOne(rt => rt.User).WithMany(u => u.RefreshTokens)
+                .HasForeignKey(rt => rt.UserId)
+                .HasConstraintName("fk_refresh_tokens_user");
         });
     }
 }

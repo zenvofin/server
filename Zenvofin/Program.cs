@@ -1,24 +1,21 @@
 using DotNetEnv;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using FastEndpoints;
 using Scalar.AspNetCore;
-using Zenvofin.Data;
+using Wolverine;
+using Zenvofin.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 Env.Load("../.env");
 
+builder.Host.UseWolverine();
+
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddFastEndpoints();
 
-builder.Services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>(options =>
-    {
-        options.Password.RequiredLength = 8;
-    })
-    .AddEntityFrameworkStores<AuthDbContext>();
-
-builder.Services.AddDbContext<AuthDbContext>(options =>
-    options.UseNpgsql(Environment.GetEnvironmentVariable("POSTGRESQL_CONNECTION")));
+builder.Services.AddAuthServices(builder.Configuration);
+builder.Services.AddDbServices();
 
 WebApplication app = builder.Build();
 
@@ -33,5 +30,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseFastEndpoints();
 
 await app.RunAsync();
