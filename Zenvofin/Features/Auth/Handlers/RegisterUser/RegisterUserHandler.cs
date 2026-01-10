@@ -22,7 +22,7 @@ public sealed class RegisterUserHandler(UserManager<User> userManager, ILogger<R
             {
                 List<string> errors = result.Errors.Select(e => e.Description).ToList();
 
-                return Result<RefreshTokenCommand>.Fail(errors, ResultCode.BadRequest);
+                return Result<RefreshTokenCommand>.Fail(errors);
             }
 
             logger.LogInformation("User {UserId} has been created successfully.", userId);

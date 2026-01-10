@@ -93,7 +93,8 @@ public sealed class AuthDbContext(DbContextOptions<AuthDbContext> options)
 
             b.ToTable("refresh_tokens");
 
-            b.HasIndex(rt => new { rt.UserId, rt.DeviceId }, "ix_refresh_tokens_user_device");
+            b.HasIndex(rt => new { rt.UserId, rt.DeviceId }, "idx_refresh_tokens_user_device_active")
+                .HasFilter("(is_revoked = false)");
             b.HasIndex(rt => rt.Token, "ux_refresh_tokens_token_hash").IsUnique();
 
             b.Property(rt => rt.Id).HasDefaultValueSql("uuid_generate_v4()").HasColumnName("id");

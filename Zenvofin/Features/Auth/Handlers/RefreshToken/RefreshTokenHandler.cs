@@ -68,7 +68,7 @@ public sealed class RefreshTokenHandler(AuthDbContext context, ILogger<RefreshTo
         CancellationToken cancellationToken)
     {
         Data.RefreshToken? existingToken = await context.RefreshTokens
-            .Where(rt => rt.DeviceId == command.DeviceId && !rt.IsRevoked)
+            .Where(rt => rt.UserId == command.UserId && rt.DeviceId == command.DeviceId && !rt.IsRevoked)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (existingToken is not null)
