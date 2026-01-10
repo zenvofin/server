@@ -1,5 +1,6 @@
 using DotNetEnv;
 using FastEndpoints;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Scalar.AspNetCore;
 using Serilog;
 using Serilog.Events;
@@ -53,7 +54,11 @@ app.UseFastEndpoints(options =>
 {
     options.Endpoints.RoutePrefix = "api/mobile";
     options.Versioning.Prefix = "v";
-    options.Endpoints.Configurator = ep => { ep.PreProcessor<CorrelationPreProcessor>(Order.Before); };
+    options.Endpoints.Configurator = ep =>
+    {
+        ep.PreProcessor<CorrelationPreProcessor>(Order.Before);
+        ep.AuthSchemes(JwtBearerDefaults.AuthenticationScheme);
+    };
 });
 
 await app.RunAsync();
