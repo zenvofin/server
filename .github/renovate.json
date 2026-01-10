@@ -1,21 +1,19 @@
 {
-  "extends": ["config:base"],
-  "packageRules": [
-    {
-      "matchManagers": ["nuget"],
-      "groupName": "all NuGet dependencies",
-      "schedule": ["at any time"]
-    },
-    {
-      "matchManagers": ["dockerfile"],
-      "groupName": "all Docker images",
-      "schedule": ["at any time"]
-    },
-    {
-      "matchManagers": ["github-actions"],
-      "groupName": "GitHub Actions",
-      "schedule": ["at any time"]
-    }
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices"
+  ],
+  "nuget": {
+    "enabled": true
+  },
+  "dockerfile": {
+    "enabled": true
+  },
+  "github-actions": {
+    "enabled": true
+  },
+  "schedule": [
+    "at any time"
   ],
   "prHourlyLimit": 3,
   "prConcurrentLimit": 10

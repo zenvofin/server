@@ -24,7 +24,7 @@ insert_final_newline = false
 [*.{cs,vb}]
 
 # Organize usings
-dotnet_separate_import_directive_groups = true
+dotnet_separate_import_directive_groups = false
 dotnet_sort_system_directives_first = true
 file_header_template = unset
 
@@ -90,7 +90,7 @@ csharp_style_expression_bodied_constructors = false:silent
 csharp_style_expression_bodied_indexers = true:silent
 csharp_style_expression_bodied_lambdas = true:suggestion
 csharp_style_expression_bodied_local_functions = false:silent
-csharp_style_expression_bodied_methods = false:silent
+csharp_style_expression_bodied_methods = when_on_single_line:suggestion
 csharp_style_expression_bodied_operators = false:silent
 csharp_style_expression_bodied_properties = true:silent
 
@@ -113,7 +113,7 @@ csharp_style_prefer_readonly_struct = true:suggestion
 csharp_style_prefer_readonly_struct_member = true:suggestion
 
 # Code-block preferences
-csharp_prefer_braces = true:silent
+csharp_prefer_braces = false:silent
 csharp_prefer_simple_using_statement = true:suggestion
 csharp_style_namespace_declarations = file_scoped:suggestion
 csharp_style_prefer_method_group_conversion = true:silent
@@ -378,6 +378,16 @@ dotnet_naming_style.s_camelcase.capitalization = camel_case
 
 # StyleCop rules compatibility
 dotnet_diagnostic.SA0001.severity = none # XML comment analysis is disabled due to project configuration
+dotnet_diagnostic.SA1000.severity = none # he keyword 'new' should be followed by a space
+dotnet_diagnostic.SA1009.severity = none # Closing parenthesis should not be followed by a space.
+dotnet_diagnostic.SA1010.severity = none # Opening square brackets should not be preceded by a space.
+dotnet_diagnostic.SA1011.severity = none # Closing square bracket should be followed by a space.
+dotnet_diagnostic.SA1101.severity = none # Prefix local calls with this
 dotnet_diagnostic.SA1200.severity = none # Using directive should appear within a namespace declaration
+dotnet_diagnostic.SA1206.severity = none # The 'required' modifier should appear before 'public'
+dotnet_diagnostic.SA1313.severity = none # The name of a parameter in C# does not begin with a lower-case letter. (records primary constructor parameters)
 dotnet_diagnostic.SA1503.severity = none # Braces should not be omitted
+dotnet_diagnostic.SA1516.severity = none # Elements should be separated by blank line
+dotnet_diagnostic.SA1600.severity = none # Elements should be documented
+dotnet_diagnostic.SA1602.severity = none # Enumeration items should be documented
 dotnet_diagnostic.SA1633.severity = none # The file header is missing or not located at the top of the file
