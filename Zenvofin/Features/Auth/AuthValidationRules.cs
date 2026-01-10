@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace Zenvofin.Features.Auth;
 
-public static class CommonValidationRules
+public static class AuthValidationRules
 {
     extension<T>(IRuleBuilder<T, string> ruleBuilder)
     {

@@ -1,5 +1,4 @@
 using System.Security.Cryptography;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Zenvofin.Features.Auth.Data;
 using Zenvofin.Features.Auth.Handlers.AccessToken;
@@ -30,7 +29,7 @@ public sealed class RefreshTokenHandler(AuthDbContext context, ILogger<RefreshTo
             {
                 UserId = command.UserId,
                 DeviceId = command.DeviceId,
-                Token = HashToken(tokenString),
+                Token = AuthHelpers.HashToken(tokenString),
                 ExpiresAt = DateTime.UtcNow.AddDays(RefreshTokenConstants.ExpirationTimeInDays),
             };
 
@@ -55,12 +54,6 @@ public sealed class RefreshTokenHandler(AuthDbContext context, ILogger<RefreshTo
                 command.UserId);
             return Result<AccessTokenCommand>.Fail(ErrorMessage.Exception, ResultCode.InternalError);
         }
-    }
-
-    private static string HashToken(string token)
-    {
-        byte[] hashBytes = SHA256.HashData(Encoding.UTF8.GetBytes(token));
-        return Convert.ToBase64String(hashBytes);
     }
 
     private async Task RevokeExistingToken(
