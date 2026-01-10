@@ -15,6 +15,9 @@ public static class AuthServiceCollectionExtensions
             {
                 options.Password.RequiredLength = 8;
                 options.Password.RequireNonAlphanumeric = false;
+                options.User.RequireUniqueEmail = true;
+                options.User.AllowedUserNameCharacters =
+                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
             })
             .AddEntityFrameworkStores<AuthDbContext>();
 

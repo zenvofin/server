@@ -381,6 +381,7 @@ dotnet_diagnostic.SA0001.severity = none # XML comment analysis is disabled due 
 dotnet_diagnostic.SA1000.severity = none # he keyword 'new' should be followed by a space
 dotnet_diagnostic.SA1009.severity = none # Closing parenthesis should not be followed by a space.
 dotnet_diagnostic.SA1010.severity = none # Opening square brackets should not be preceded by a space.
+dotnet_diagnostic.SA1011.severity = none # Closing square bracket should be followed by a space.
 dotnet_diagnostic.SA1101.severity = none # Prefix local calls with this
 dotnet_diagnostic.SA1200.severity = none # Using directive should appear within a namespace declaration
 dotnet_diagnostic.SA1206.severity = none # The 'required' modifier should appear before 'public'

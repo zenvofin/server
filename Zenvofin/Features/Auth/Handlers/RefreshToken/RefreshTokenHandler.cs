@@ -8,7 +8,7 @@ using Zenvofin.Shared.Result;
 
 namespace Zenvofin.Features.Auth.Handlers.RefreshToken;
 
-public sealed class RefreshTokenHandler(AuthDbContext context)
+public sealed class RefreshTokenHandler(AuthDbContext context, ILogger<RefreshTokenHandler> logger)
 {
     public async Task<Result<AccessTokenCommand>> Handle(
         RefreshTokenCommand refreshTokenCommandEvent,
@@ -35,14 +35,24 @@ public sealed class RefreshTokenHandler(AuthDbContext context)
             };
 
             context.RefreshTokens.Add(refreshToken);
+
+            logger.LogInformation(
+                "Token for user {UserId} with device {DeviceId} has been refreshed.",
+                refreshTokenCommandEvent.UserId,
+                refreshTokenCommandEvent.DeviceId);
+
             await context.SaveChangesAsync(cancellationToken);
 
             AccessTokenCommand tokenResponse = new(refreshTokenCommandEvent.UserId, refreshTokenCommandEvent.DeviceId);
 
             return Result<AccessTokenCommand>.Success(tokenResponse);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            logger.LogError(
+                ex,
+                "An error occurred while generating a refresh token for user {UserId}.",
+                refreshTokenCommandEvent.UserId);
             return Result<AccessTokenCommand>.Fail(ErrorMessage.Exception, ResultCode.InternalError);
         }
     }
@@ -65,6 +75,11 @@ public sealed class RefreshTokenHandler(AuthDbContext context)
         {
             existingToken.IsRevoked = true;
             existingToken.RevokedAt = DateTime.UtcNow;
+
+            logger.LogInformation(
+                "Token for user {UserId} with device {DeviceId} has been revoked.",
+                refreshTokenCommandEvent.UserId,
+                refreshTokenCommandEvent.DeviceId);
         }
     }
 }

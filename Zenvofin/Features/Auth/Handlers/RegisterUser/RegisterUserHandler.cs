@@ -6,7 +6,7 @@ using Zenvofin.Shared.Result;
 
 namespace Zenvofin.Features.Auth.Handlers.RegisterUser;
 
-public sealed class RegisterUserHandler(UserManager<User> userManager)
+public sealed class RegisterUserHandler(UserManager<User> userManager, ILogger<RegisterUserHandler> logger)
 {
     public async Task<Result<RefreshTokenCommand>> Handle(RegisterUserCommand request)
     {
@@ -25,12 +25,15 @@ public sealed class RegisterUserHandler(UserManager<User> userManager)
                 return Result<RefreshTokenCommand>.Fail(errors, ResultCode.BadRequest);
             }
 
+            logger.LogInformation("User {UserId} has been created successfully.", userId);
+
             RefreshTokenCommand refreshTokenCommandEvent = new(userId, request.DeviceId);
 
             return Result<RefreshTokenCommand>.Success(refreshTokenCommandEvent);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            logger.LogError(ex, "An error occurred while creating a new user.");
             return Result<RefreshTokenCommand>.Fail(ErrorMessage.Exception, ResultCode.InternalError);
         }
     }
