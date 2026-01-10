@@ -36,7 +36,8 @@ public class RegisterUserEndpoint(IMessageBus messageBus) : Endpoint<RegisterUse
             return;
         }
 
-        Result<string> jwtResult = await messageBus.InvokeAsync<Result<string>>(accessTokenEvent.Data!, ct);
+        Result<AccessTokenResponse> jwtResult =
+            await messageBus.InvokeAsync<Result<AccessTokenResponse>>(accessTokenEvent.Data!, ct);
 
         await Send.SendAsync(jwtResult, ct);
     }

@@ -9,12 +9,12 @@ namespace Zenvofin.Features.Auth.Handlers.AccessToken;
 
 public sealed class AccessTokenHandler(IConfiguration configuration)
 {
-    public Result<string> Handle(AccessTokenCommand accessTokenCommandEvent)
+    public Result<AccessTokenResponse> Handle(AccessTokenCommand command)
     {
         List<Claim> claims =
         [
-            new(ClaimTypes.NameIdentifier, accessTokenCommandEvent.UserId.ToString()),
-            new(ClaimTypes.Thumbprint, accessTokenCommandEvent.DeviceId.ToString()),
+            new(ClaimTypes.NameIdentifier, command.UserId.ToString()),
+            new(ClaimTypes.Thumbprint, command.DeviceId.ToString()),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         ];
 
@@ -33,6 +33,8 @@ public sealed class AccessTokenHandler(IConfiguration configuration)
 
         string jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
-        return Result<string>.Success(jwt, "Token generated successfully");
+        AccessTokenResponse tokens = new(jwt, command.RefreshToken);
+
+        return Result<AccessTokenResponse>.Success(tokens, "Token generated successfully");
     }
 }
