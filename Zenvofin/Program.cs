@@ -33,6 +33,10 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseFastEndpoints(options => options.Endpoints.RoutePrefix = "api");
+app.UseFastEndpoints(options =>
+{
+    options.Endpoints.RoutePrefix = "api/mobile";
+    options.Versioning.Prefix = "v";
+});
 
 await app.RunAsync();

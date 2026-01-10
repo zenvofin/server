@@ -11,6 +11,7 @@ public class RegisterUserEndpoint(IMessageBus messageBus) : Endpoint<RegisterUse
     public override void Configure()
     {
         Post("/auth/register");
+        Version(1);
         AllowAnonymous();
     }
 
