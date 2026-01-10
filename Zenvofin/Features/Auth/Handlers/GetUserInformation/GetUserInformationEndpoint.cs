@@ -4,24 +4,25 @@ using Zenvofin.Shared;
 using Zenvofin.Shared.Result;
 using Zenvofin.Shared.UserInformation;
 
-namespace Zenvofin.Features.Auth.Handlers.LogoutUser;
+namespace Zenvofin.Features.Auth.Handlers.GetUserInformation;
 
-public class LogoutUserEndpoint(IMessageBus messageBus) : EndpointWithoutRequest<Result>
+public class GetUserInformationEndpoint(IMessageBus messageBus) : EndpointWithoutRequest<Result>
 {
     public override void Configure()
     {
-        Post("/auth/logout");
-        Throttle(10, 60, HeaderConstants.ClientId);
+        Get("/auth/user");
         Version(1);
+        Throttle(60, 60, HeaderConstants.ClientId);
     }
 
     public override async Task HandleAsync(CancellationToken ct)
     {
         if (User.TryGetClaims(out UserClaims claims))
         {
-            LogoutUserCommand command = new(claims.UserId, claims.DeviceId);
+            GetUserInformationCommand command = new(claims.UserId);
 
-            Result result = await messageBus.InvokeAsync<Result>(command, ct);
+            Result<GetUserInformationResponse> result =
+                await messageBus.InvokeAsync<Result<GetUserInformationResponse>>(command, ct);
 
             await Send.SendAsync(result, ct);
         }

@@ -48,7 +48,7 @@ public class ValidateRefreshTokenEndpoint(IMessageBus messageBus) : Endpoint<Val
         }
         else
         {
-            await Send.SendAsync(Result.Fail("User claims are invalid.", ResultCode.Unauthorized), ct);
+            await Send.SendAsync(Result.Fail(ErrorMessage.InvalidClaims, ResultCode.Unauthorized), ct);
         }
     }
 }

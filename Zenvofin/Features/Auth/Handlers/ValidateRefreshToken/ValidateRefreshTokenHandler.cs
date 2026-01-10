@@ -17,6 +17,7 @@ public sealed class ValidateRefreshTokenHandler(AuthDbContext context, ILogger<V
             string hashedToken = AuthHelpers.HashToken(command.RefreshToken);
 
             Data.RefreshToken? refreshToken = await context.RefreshTokens
+                .AsNoTracking()
                 .Where(rt => rt.UserId == command.UserId
                              && rt.DeviceId == command.DeviceId
                              && rt.Token == hashedToken

@@ -10,4 +10,6 @@ public static class AuthHelpers
         byte[] hashBytes = SHA256.HashData(Encoding.UTF8.GetBytes(token));
         return Convert.ToBase64String(hashBytes);
     }
+
+    public static string UserInfoKey(Guid userId) => $"UserInfo:{userId}";
 }
