@@ -12,6 +12,7 @@ public class RegisterUserEndpoint(IMessageBus messageBus) : Endpoint<RegisterUse
     {
         Post("/auth/register");
         Version(1);
+        Throttle(10, 60);
         AllowAnonymous();
     }
 
