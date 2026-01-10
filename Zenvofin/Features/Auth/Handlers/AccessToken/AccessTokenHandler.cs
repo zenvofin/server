@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Zenvofin.Shared;
+using Zenvofin.Shared.Result;
 
 namespace Zenvofin.Features.Auth.Handlers.AccessToken;
 

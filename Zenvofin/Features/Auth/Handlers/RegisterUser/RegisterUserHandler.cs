@@ -1,38 +1,37 @@
 using Microsoft.AspNetCore.Identity;
-using Wolverine;
 using Zenvofin.Features.Auth.Data;
 using Zenvofin.Features.Auth.Handlers.RefreshToken;
 using Zenvofin.Shared;
+using Zenvofin.Shared.Result;
 
 namespace Zenvofin.Features.Auth.Handlers.RegisterUser;
 
 public sealed class RegisterUserHandler(UserManager<User> userManager)
 {
-    public async Task<(HandlerContinuation, Result<RefreshTokenCommand>)> Handle(RegisterUserCommand request)
+    public async Task<Result<RefreshTokenCommand>> Handle(RegisterUserCommand request)
     {
         try
         {
             Guid userId = Guid.NewGuid();
 
-            User user = new() { Id = userId, Email = request.Email };
+            User user = new() { Id = userId, Email = request.Email, UserName = request.Name };
 
             IdentityResult result = await userManager.CreateAsync(user, request.Password);
 
             if (!result.Succeeded)
             {
-                Result<RefreshTokenCommand> failResult =
-                    Result<RefreshTokenCommand>.Fail(result.Errors.Select(e => e.Description).ToList());
-                return (HandlerContinuation.Stop, failResult);
+                List<string> errors = result.Errors.Select(e => e.Description).ToList();
+
+                return Result<RefreshTokenCommand>.Fail(errors, ResultCode.BadRequest);
             }
 
             RefreshTokenCommand refreshTokenCommandEvent = new(userId, request.DeviceId);
 
-            return (HandlerContinuation.Continue, Result<RefreshTokenCommand>.Success(refreshTokenCommandEvent));
+            return Result<RefreshTokenCommand>.Success(refreshTokenCommandEvent);
         }
         catch (Exception)
         {
-            Result<RefreshTokenCommand> errorResult = Result<RefreshTokenCommand>.Fail(ErrorMessage.Exception);
-            return (HandlerContinuation.Stop, errorResult);
+            return Result<RefreshTokenCommand>.Fail(ErrorMessage.Exception, ResultCode.InternalError);
         }
     }
 }

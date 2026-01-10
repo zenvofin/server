@@ -2,13 +2,15 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Zenvofin.Features.Auth.Data;
+using Zenvofin.Features.Auth.Handlers.AccessToken;
 using Zenvofin.Shared;
+using Zenvofin.Shared.Result;
 
 namespace Zenvofin.Features.Auth.Handlers.RefreshToken;
 
 public sealed class RefreshTokenHandler(AuthDbContext context)
 {
-    public async Task<Result<RefreshTokenResponse>> Handle(
+    public async Task<Result<AccessTokenCommand>> Handle(
         RefreshTokenCommand refreshTokenCommandEvent,
         CancellationToken cancellationToken = default)
     {
@@ -35,15 +37,13 @@ public sealed class RefreshTokenHandler(AuthDbContext context)
             context.RefreshTokens.Add(refreshToken);
             await context.SaveChangesAsync(cancellationToken);
 
-            RefreshTokenResponse tokenResponse = new(refreshTokenCommandEvent.UserId, tokenString);
+            AccessTokenCommand tokenResponse = new(refreshTokenCommandEvent.UserId, refreshTokenCommandEvent.DeviceId);
 
-            return Result<RefreshTokenResponse>.Success(tokenResponse);
+            return Result<AccessTokenCommand>.Success(tokenResponse);
         }
         catch (Exception)
         {
-            Result<RefreshTokenResponse> errorResult =
-                Result<RefreshTokenResponse>.Fail(ErrorMessage.Exception);
-            return errorResult;
+            return Result<AccessTokenCommand>.Fail(ErrorMessage.Exception, ResultCode.InternalError);
         }
     }
 

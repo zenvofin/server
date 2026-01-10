@@ -387,4 +387,5 @@ dotnet_diagnostic.SA1206.severity = none # The 'required' modifier should appear
 dotnet_diagnostic.SA1313.severity = none # The name of a parameter in C# does not begin with a lower-case letter. (records primary constructor parameters)
 dotnet_diagnostic.SA1503.severity = none # Braces should not be omitted
 dotnet_diagnostic.SA1600.severity = none # Elements should be documented
+dotnet_diagnostic.SA1602.severity = none # Enumeration items should be documented
 dotnet_diagnostic.SA1633.severity = none # The file header is missing or not located at the top of the file

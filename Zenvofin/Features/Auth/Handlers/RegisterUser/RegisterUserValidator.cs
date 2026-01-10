@@ -12,6 +12,12 @@ public class RegisterUserValidator : Validator<RegisterUserCommand>
             .MaximumLength(256).WithMessage("Email cannot be longer than 256 characters.")
             .EmailAddress().WithMessage("Invalid email format.");
 
+        RuleFor(x => x.Name)
+            .NotEmpty().WithMessage("Name is required.")
+            .MinimumLength(2).WithMessage("Name must be at least 2 characters long.")
+            .MaximumLength(50).WithMessage("Name cannot be longer than 50 characters.")
+            .Matches(@"^[a-zA-Z\s]+$").WithMessage("Name can only contain letters and spaces.");
+
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("Password is required.")
             .MinimumLength(8).WithMessage("Password must be at least 8 characters long.")
