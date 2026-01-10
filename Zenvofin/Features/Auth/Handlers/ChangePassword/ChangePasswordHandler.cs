@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Caching.Memory;
 using Zenvofin.Features.Auth.Data;
 using Zenvofin.Shared;
 using Zenvofin.Shared.Result;
@@ -8,7 +7,6 @@ namespace Zenvofin.Features.Auth.Handlers.ChangePassword;
 
 public sealed class ChangePasswordHandler(
     UserManager<User> userManager,
-    IMemoryCache cache,
     ILogger<ChangePasswordHandler> logger)
 {
     public async Task<Result> Handle(ChangePasswordCommand command)
@@ -37,8 +35,6 @@ public sealed class ChangePasswordHandler(
                     string.Join(", ", errors));
                 return Result.Fail(errors);
             }
-
-            cache.Remove(AuthHelpers.UserInfoKey(command.UserId));
 
             logger.LogInformation(
                 "Password for user {UserId} has been changed successfully.",
