@@ -52,7 +52,7 @@ app.UseAuthorization();
 app.UseSerilogRequestLogging();
 app.UseFastEndpoints(options =>
 {
-    options.Endpoints.RoutePrefix = "api/mobile";
+    options.Endpoints.RoutePrefix = "api";
     options.Versioning.Prefix = "v";
     options.Endpoints.Configurator = ep =>
     {
