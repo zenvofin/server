@@ -3,18 +3,35 @@
   "extends": [
     "config:best-practices"
   ],
-  "nuget": {
-    "enabled": true
-  },
-  "dockerfile": {
-    "enabled": true
-  },
-  "github-actions": {
-    "enabled": true
-  },
   "schedule": [
-    "at any time"
+    "before 3am"
   ],
-  "prHourlyLimit": 3,
-  "prConcurrentLimit": 10
+  "timezone": "Europe/Kyiv",
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "groupName": "all dependencies",
+      "groupSlug": "all-updates"
+    }
+  ],
+  "rangeStrategy": "bump",
+  "semanticCommits": "enabled",
+  "labels": [
+    "dependencies"
+  ],
+  "prConcurrentLimit": 3,
+  "prCreation": "immediate",
+  "ignoreTests": false,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": [
+      "before 3am"
+    ]
+  }
 }
