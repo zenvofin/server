@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Caching.Memory;
 using Zenvofin.Features.Auth.Data;
 using Zenvofin.Shared;
 using Zenvofin.Shared.Result;
@@ -8,7 +7,6 @@ namespace Zenvofin.Features.Auth.Handlers.UpdateUserInformation;
 
 public sealed class UpdateUserInformationHandler(
     UserManager<User> userManager,
-    IMemoryCache cache,
     ILogger<UpdateUserInformationHandler> logger)
 {
     public async Task<Result> Handle(UpdateUserInformationCommand command)
@@ -52,8 +50,6 @@ public sealed class UpdateUserInformationHandler(
                         string.Join(", ", errors));
                     return Result.Fail(errors);
                 }
-
-                cache.Remove(AuthHelpers.UserInfoKey(command.UserId));
 
                 logger.LogInformation(
                     "User {UserId} information has been updated successfully.",

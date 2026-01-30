@@ -35,11 +35,7 @@ public sealed class DeleteUserHandler(
                 return Result.Fail(errors);
             }
 
-            cache.Remove(AuthHelpers.UserInfoKey(command.UserId));
-
-            logger.LogInformation(
-                "User {UserId} has been deleted successfully.",
-                command.UserId);
+            logger.LogInformation("User {UserId} has been deleted successfully.", command.UserId);
 
             return Result.Success("User deleted successfully.");
         }
