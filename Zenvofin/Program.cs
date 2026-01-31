@@ -23,7 +23,7 @@ builder.Host.UseSerilog((context, services, configuration) =>
         .ReadFrom.Services(services)
         .Enrich.FromLogContext()
         .Enrich.WithEnvironmentName()
-        .WriteTo.Seq(context.Configuration["SerilogUrl"]!, apiKey: Environment.GetEnvironmentVariable("SEQ_API_KEY")!);
+        .WriteTo.Console();
 });
 
 builder.Services.AddOpenApi();

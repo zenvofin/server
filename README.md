@@ -1,4 +1,4 @@
-# Zenvofin's back-end
+# Welcome!
 
 ## Requirements
 
@@ -14,7 +14,6 @@
 ```
 POSTGRESQL_CONNECTION=Host=localhost;Database=zenvofin;Username=postgres;Password=postgres
 JWT_SECRET=generate_secret_key
-SEQ_API_KEY=generate_key_in_seq
 ```
 
 5. Run the application.
