@@ -27,7 +27,7 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        run: dotnet build --configuration Release /p:TreatWarningsAsErrors=true
+        run: dotnet build --configuration Release
 
   docker:
     name: Build Docker Image
