@@ -12,8 +12,7 @@
 4. Create .env file in the root folder and add environment variables:
 
 ```
-POSTGRESQL_CONNECTION=Host=localhost;Database=zenvofin;Username=postgres;Password=postgres
 JWT_SECRET=generate_secret_key
 ```
 
-5. Run the application.
+5. Run the application with Aspire.

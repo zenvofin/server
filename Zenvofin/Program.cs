@@ -31,7 +31,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddFastEndpoints();
 
 builder.Services.AddAuthServices(builder.Configuration);
-builder.Services.AddDbServices();
+builder.Services.AddDbServices(builder.Configuration);
 
 WebApplication app = builder.Build();
 
