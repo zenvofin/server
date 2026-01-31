@@ -5,12 +5,10 @@ namespace Zenvofin.Extensions;
 
 public static class DbContextServiceCollectionExtensions
 {
-    public static IServiceCollection AddDbServices(this IServiceCollection services)
+    public static IServiceCollection AddDbServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddMemoryCache();
-
         services.AddDbContext<AuthDbContext>(options =>
-            options.UseNpgsql(Environment.GetEnvironmentVariable("POSTGRESQL_CONNECTION")));
+            options.UseNpgsql(configuration.GetConnectionString("zenvofin")));
 
         return services;
     }

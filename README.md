@@ -1,4 +1,4 @@
-# Zenvofin's back-end
+# Welcome!
 
 ## Requirements
 
@@ -12,9 +12,7 @@
 4. Create .env file in the root folder and add environment variables:
 
 ```
-POSTGRESQL_CONNECTION=Host=localhost;Database=zenvofin;Username=postgres;Password=postgres
 JWT_SECRET=generate_secret_key
-SEQ_API_KEY=generate_key_in_seq
 ```
 
-4. Run the application.
+5. Run the application with Aspire.

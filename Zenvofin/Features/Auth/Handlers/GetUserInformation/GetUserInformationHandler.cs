@@ -1,4 +1,5 @@
-using Microsoft.Extensions.Caching.Memory;
+using Mapster;
+using Microsoft.EntityFrameworkCore;
 using Zenvofin.Features.Auth.Data;
 using Zenvofin.Shared;
 using Zenvofin.Shared.Result;
@@ -7,7 +8,6 @@ namespace Zenvofin.Features.Auth.Handlers.GetUserInformation;
 
 public sealed class GetUserInformationHandler(
     AuthDbContext context,
-    IMemoryCache cache,
     ILogger<GetUserInformationHandler> logger)
 {
     public async Task<Result<GetUserInformationResponse>> Handle(
@@ -18,17 +18,12 @@ public sealed class GetUserInformationHandler(
         {
             GetUserInformationResponse? user = await context.Users
                 .Where(u => u.Id == command.UserId)
-                .FromCacheItemAsync<User, GetUserInformationResponse>(
-                    cache,
-                    AuthHelpers.UserInfoKey(command.UserId),
-                    TimeSpan.FromMinutes(10),
-                    cancellationToken);
+                .ProjectToType<GetUserInformationResponse>()
+                .FirstOrDefaultAsync(cancellationToken);
 
             if (user is null)
             {
-                logger.LogWarning(
-                    "User not found with ID {UserId}.",
-                    command.UserId);
+                logger.LogWarning("User not found with ID {UserId}.", command.UserId);
                 return Result<GetUserInformationResponse>.Fail("User not found.", ResultCode.NotFound);
             }
 

@@ -4,7 +4,7 @@
     "config:best-practices"
   ],
   "schedule": [
-    "before 3am"
+    "before 9am on Saturday"
   ],
   "timezone": "Europe/Kyiv",
   "packageRules": [
@@ -31,7 +31,7 @@
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": [
-      "before 3am"
+      "before 9am on Saturday"
     ]
   }
 }
