@@ -37,4 +37,8 @@
         <PackageReference Include="WolverineFx" Version="5.12.1"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\Zenvofin.ServiceDefaults\Zenvofin.ServiceDefaults.csproj"/>
+    </ItemGroup>
+
 </Project>
