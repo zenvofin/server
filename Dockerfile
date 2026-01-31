@@ -17,7 +17,7 @@ RUN dotnet publish -c Release -o /app --no-restore \
     /p:PublishTrimmed=false \
     /p:PublishSingleFile=false
 
-FROM mcr.microsoft.com/dotnet/aspnet:10.0-azurelinux3.0-distroless AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-azurelinux3.0-distroless@sha256:a7ece98b49590bdf65a3eebf099d831f97e9bb1a999532f7f0171859f7661fa4 AS runtime
 WORKDIR /app
 COPY --from=build /app ./
 
