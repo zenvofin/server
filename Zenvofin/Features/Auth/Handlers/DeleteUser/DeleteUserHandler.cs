@@ -8,7 +8,6 @@ namespace Zenvofin.Features.Auth.Handlers.DeleteUser;
 
 public sealed class DeleteUserHandler(
     UserManager<User> userManager,
-    IMemoryCache cache,
     ILogger<DeleteUserHandler> logger)
 {
     public async Task<Result> Handle(DeleteUserCommand command)
