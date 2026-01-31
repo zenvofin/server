@@ -6,6 +6,7 @@ using Serilog;
 using Serilog.Events;
 using Wolverine;
 using Zenvofin.Extensions;
+using Zenvofin.ServiceDefaults;
 using Zenvofin.Shared;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -13,18 +14,28 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 Env.Load("../.env");
 
 builder.Host.UseWolverine();
-builder.Host.UseSerilog((context, services, configuration) =>
+
+if (builder.Environment.IsDevelopment())
 {
-    configuration
-        .MinimumLevel.Information()
-        .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-        .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
-        .ReadFrom.Configuration(context.Configuration)
-        .ReadFrom.Services(services)
-        .Enrich.FromLogContext()
-        .Enrich.WithEnvironmentName()
-        .WriteTo.Console();
-});
+    builder.AddServiceDefaults();
+}
+else
+{
+    builder.Host.UseSerilog((context, services, configuration) =>
+    {
+        configuration
+            .MinimumLevel.Information()
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+            .ReadFrom.Configuration(context.Configuration)
+            .ReadFrom.Services(services)
+            .Enrich.FromLogContext()
+            .Enrich.WithEnvironmentName()
+            .WriteTo.Seq(
+                context.Configuration["SerilogUrl"]!,
+                apiKey: Environment.GetEnvironmentVariable("SEQ_API_KEY")!);
+    });
+}
 
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
@@ -44,12 +55,15 @@ if (app.Environment.IsDevelopment())
         options.Theme = ScalarTheme.Kepler;
     });
 }
+else
+{
+    app.UseSerilogRequestLogging();
+}
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseSerilogRequestLogging();
 app.UseFastEndpoints(options =>
 {
     options.Endpoints.RoutePrefix = "api";
