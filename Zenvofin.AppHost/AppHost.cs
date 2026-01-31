@@ -3,7 +3,7 @@ using Projects;
 IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(args);
 
 IResourceBuilder<PostgresDatabaseResource> postgres = builder.AddPostgres("postgres")
-    .WithImage("zenvofin-development-postgres")
+    .WithImage("khavol/zenvofin-postgres:latest")
     .WithVolume("zenvofin-postgres", "/var/lib/postgresql")
     .WithLifetime(ContainerLifetime.Persistent)
     .WithArgs("-c", "shared_preload_libraries=pg_cron", "-c", "cron.database_name=zenvofin")
