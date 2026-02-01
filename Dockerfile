@@ -5,12 +5,14 @@ COPY *.slnx ./
 COPY Zenvofin/*.csproj ./Zenvofin/
 COPY Zenvofin.AppHost/*.csproj ./Zenvofin.AppHost/
 COPY Zenvofin.ServiceDefaults/*.csproj ./Zenvofin.ServiceDefaults/
+COPY Zenvofin.Tests/*.csproj ./Zenvofin.Tests/
 
 RUN dotnet restore
 
 COPY Zenvofin/ ./Zenvofin/
 COPY Zenvofin.AppHost/ ./Zenvofin.AppHost/
 COPY Zenvofin.ServiceDefaults/ ./Zenvofin.ServiceDefaults/
+COPY Zenvofin.Tests/ ./Zenvofin.Tests/
 
 WORKDIR /src/Zenvofin
 RUN dotnet publish -c Release -o /app --no-restore \

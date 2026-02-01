@@ -29,6 +29,9 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release -p:TreatWarningsAsErrors=true
 
+      - name: Test
+        run: dotnet test --configuration Release --no-build
+
   docker:
     name: Build Docker Image
     runs-on: ubuntu-latest
