@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0@sha256:25d14b400b75fa4e89d5bd4487a92a604a4e409ab65becb91821e7dc4ac7f81f AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0@sha256:0a506ab0c8aa077361af42f82569d364ab1b8741e967955d883e3f23683d473a AS build
 WORKDIR /src
 
 COPY *.slnx ./
@@ -19,7 +19,7 @@ RUN dotnet publish -c Release -o /app --no-restore \
     /p:PublishTrimmed=false \
     /p:PublishSingleFile=false
 
-FROM mcr.microsoft.com/dotnet/aspnet:10.0-azurelinux3.0-distroless@sha256:a7ece98b49590bdf65a3eebf099d831f97e9bb1a999532f7f0171859f7661fa4 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-azurelinux3.0-distroless@sha256:973ac891bc21916cb4f579ed3cd5737fac0a1452d30b11a25493df65eefd4786 AS runtime
 WORKDIR /app
 COPY --from=build /app ./
 
